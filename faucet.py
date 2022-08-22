@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import random
 import json
@@ -29,3 +31,6 @@ def index():
     return render_template('index.html', name='justin', 
         invoice=invoice, pay_result=pay_result, connect_str=connect_str)
 
+
+if __name__ == "__main__":
+    app.run(port = 3000)
