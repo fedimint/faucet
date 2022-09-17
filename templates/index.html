@@ -5,15 +5,28 @@
 </meta>
 
 <title>Fedimint Helper</title>
-
+<div id="main">
 <h1>Join Federation</h1>
+
+<p>
+  This signet <a href="https://github.com/fedimint/fedimint">Fedimint</a> instance runs on commit <code>a26e14b</code>. To
+  test it you can use <a target="_blank" href="https://fm-app.sirion.io/">this web client</a>
+  (<a href="https://github.com/futurepaul/fluttermint">based on a Fluttermint fork</a>) or compile the command line client by cloning
+  <a href="https://github.com/fedimint/fedimint/">the repository</a>, checking out <code>a26e14b</code>, having
+  <a href="https://github.com/fedimint/fedimint/blob/master/docs/dev-env.md">Nix installed</a> and calling
+  <code>nix shell .#mint-client-cli</code>. The web client will ask for the below connect string/scanning the QR code to
+  join the federation. The CLI client has to be called with
+  <code>mint-client-cli &lt;datadir&gt; join-federation '&lt;connect string&gt;'</code> to the same effect.
+</p>
 
 <img style="height: 200px; width: 200px;" src="{{ qrcode(connect_str) }}">
 
-<pre>{{ connect_str }}</pre>
+<p>Connect string: <pre>{{ connect_str }}</pre></p>
 
 <h1>Pay Invoice</h1>
-
+<p>Please be nice and only request 1000 signet sats per person. While they are worthless they are hard to come by somehow
+and thus our LN channels are small.</p>
+<br>
 {% if pay_result %}
   <pre>{{ pay_result }}</pre>
 {% endif %}
@@ -26,14 +39,15 @@
 <button id="stop" type="submit">Stop</button>
 
 <form method="post">
-  <label for="invoice">Invoice:</label><br>
+  <label for="invoice">Invoice to pay:</label><br>
   <input type="text" id="invoice" name="invoice"><br>
   <input type="submit" value="Submit">
 </form>
 
 
 <h1>Create Invoice</h1>
-
+<a target="_blank" href="https://sigpay.sirion.io/apps/33Au5UDsPWnUL5GVT8q1Yjovw83K/crowdfund">To spend your freshly acquired signet sats you can use this BTCPay site (goes back into the faucet).</a>
+<!--
 {% if invoice %}
   <img style="height: 200pxm; width: 200px;" src="{{ qrcode(invoice) }}">
   <div>{{ invoice }}</div>
@@ -44,7 +58,8 @@
   <input type="text" id="amount" name="amount"><br>
   <input type="submit" value="Submit">
 </form>
-
+-->
+</div>
   <script type="module">
     var scan = document.getElementById('scan');
     var stop = document.getElementById('stop');
@@ -89,5 +104,11 @@
 
   #stop {
     display: none;
+  }
+
+  #main {
+    max-width: 500px;
+    text-align: justify;
+    margin: auto;
   }
 </style>
