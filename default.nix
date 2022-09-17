@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{pkgs, lib}:
 let
   mach-nix = import (builtins.fetchGit {
     url = "https://github.com/DavHau/mach-nix/";
@@ -7,23 +7,23 @@ let
   python = mach-nix.mkPython {
     requirements = builtins.readFile ./requirements.txt;
   };
-  package = { lib, python3Packages }:
-  python3Packages.buildPythonPackage {
-    name = "faucet";
-    src = ./.;
-
-    propagatedBuildInputs = [ python ];
-
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/${python.sitePackages}
-      cp -r . $out/${python.sitePackages}/faucet
-      runHook postInstall
-    '';
-
-    shellHook = "export FLASK_APP=faucet.py";
-
-    format = "other";
-  };
 in
-pkgs.callPackage package {}
+pkgs.python3Packages.buildPythonApplication {
+  name = "faucet";
+  src = ./.;
+
+  propagatedBuildInputs = [ python pkgs.python3Packages.setuptools ];
+
+  installPhase = ''
+    runHook preInstall
+    python setup.py install --prefix=$out
+    cp -r templates $out/lib/python3.9/site-packages/fedimint_helper-1.0-py3.9.egg/EGG-INFO/scripts/templates
+    cp -r static $out/lib/python3.9/site-packages/fedimint_helper-1.0-py3.9.egg/EGG-INFO/scripts/static
+    wrapProgram $out/bin/faucet.py --prefix PYTHONPATH : "$(toPythonPath $out)"
+    runHook postInstall
+  '';
+
+  shellHook = "export FLASK_APP=faucet.py";
+
+  format = "other";
+}
