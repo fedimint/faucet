@@ -26,7 +26,10 @@ def index():
             invoice = rpc.invoice(amount, str(random.random()), 'test')['bolt11']
         # pay invoice
         if 'invoice' in request.form:
-            pay_result = str(rpc.pay(request.form['invoice']))
+            try:
+                pay_result = str(rpc.pay(request.form['invoice']))
+            except Exception as e:
+                pay_result = str(e)
              
     return render_template('index.html', name='justin', 
         invoice=invoice, pay_result=pay_result, connect_str=connect_str)
