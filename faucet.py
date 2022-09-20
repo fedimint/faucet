@@ -27,7 +27,11 @@ def index():
         # pay invoice
         if 'invoice' in request.form:
             try:
-                pay_result = str(rpc.pay(request.form['invoice']))
+                amount = rpc.decodepay(request.form['invoice'])['msatoshi']
+                if amount > 1_000_000:
+                    pay_result = f"Max amount is 1000000 msats, this invoice is for {amount} msats"
+                else:
+                    pay_result = str(rpc.pay(request.form['invoice']))
             except Exception as e:
                 pay_result = str(e)
              
