@@ -4,28 +4,56 @@
   <script src="/static/qr-scanner.legacy.min.js"></script>
 </meta>
 
-<title>Fedimint Helper</title>
+<title>Fedimint Signet Faucet</title>
 <div id="main">
 <h1>Join Federation</h1>
 
 <p>
-  This signet <a href="https://github.com/fedimint/fedimint">Fedimint</a> instance runs on commit <code>a26e14b</code>. To
-  test it you can use <a target="_blank" href="https://fm-app.sirion.io/">this web client</a>
-  (<a href="https://github.com/futurepaul/fluttermint">based on a Fluttermint fork</a>) or compile the command line client by cloning
-  <a href="https://github.com/fedimint/fedimint/">the repository</a>, checking out <code>a26e14b</code>, having
-  <a href="https://github.com/fedimint/fedimint/blob/master/docs/dev-env.md">Nix installed</a> and calling
-  <code>nix shell .#mint-client-cli</code>. The web client will ask for the below connect string/scanning the QR code to
-  join the federation. The CLI client has to be called with
-  <code>mint-client-cli &lt;datadir&gt; join-federation '&lt;connect string&gt;'</code> to the same effect.
+  This signet <a href="https://github.com/fedimint/fedimint">Fedimint</a> instance runs on commit
+  <a href="https://github.com/fedimint/fedimint/commit/734f1414298816ef36ae5ca1299049556276ebd6"><code>734f141</code></a>.
+  To test it there exist four clients:
+  <ul>
+    <li>
+      <p><a href="https://github.com/futurepaul/fluttermint/releases/tag/0.0.6">Fluttermint Mobile</a>: The most developed
+      and user friendly of the clients. Currently, only receiving and sending via Lightning is supported while underneath
+      e-cash is used. It's only available as a binary for Android right now but can be compiled for iOS too.</p>
+      <p>To join the federation scan the below QR code or paste the federation code.</p>
+    </li>
+    <li>
+      <p><a href="https://fm-app.sirion.io/">Fluttermint Web</a>: an old fork of Fluttermint that came out of this year's
+      Summer of Bitcoin internship program. It runs in the web browser but isn't being actively developed anymore. It's
+      rather slow and buggy, but can be used for some basic testing.</p>
+      <p>To join the federation scan the below QR code or paste the federation code.</p>
+    </li>
+    <li>
+      <p><a href="https://github.com/fedimint/fedimint/tree/master/client/cli">CLI client</a>: The main Fedimint repository
+      contains a CLI client that is used for testing. It supports on-chain, Lightning and pure e-cash transactions and
+      is the most complete of the clients but very manual and requires some level of expertise.</p>
+
+      <p>To compile it <a href="https://nixos.org/download.html">Nix</a> has to be installed. The an environment containing
+      the CLI client can be entered by calling <code>nix shell .#mint-client-cli</code> from the root of the Fedimint
+      git repository.</p>
+
+      <p>To join the federation call <code>mint-client-cli &lt;datadir&gt; join-federation '&lt;federation code&gt;'</code>.
+      For more information see the <a href="https://github.com/fedimint/fedimint/blob/master/docs/dev-running.md#using-the-client">documentation</a>
+      and tests in the repository.</p>
+    </li>
+    <li>
+      <a href="https://www.webimint.xyz/">Webimint</a>: This one is the newest experimental client. It runs in the
+      browser and only supports e-cash to e-cash transfers, so one needs to get e-cash tokens from someone with a CLI
+      client or another Webimint user.
+    </li>
+  </ul>
 </p>
 
 <img style="height: 200px; width: 200px;" src="{{ qrcode(connect_str) }}">
 
-<p>Connect string: <pre>{{ connect_str }}</pre></p>
+<p>Federation Code: <pre>{{ connect_str }}</pre></p>
 
 <h1>Pay Invoice</h1>
-<p>Please be nice and only request 1000 signet sats per person. While they are worthless they are hard to come by somehow
-and thus our LN channels are small.</p>
+<p>You can use this faucet to acquire signet e-cash tokens from the federation via Lightning. Please be considerate and
+  only request 1000 signet sats per person. While they are worthless they are hard to come by somehow and thus our LN
+  channels are small.</p>
 <br>
 {% if pay_result %}
   <pre>{{ pay_result }}</pre>
@@ -46,7 +74,13 @@ and thus our LN channels are small.</p>
 
 
 <h1>Create Invoice</h1>
-<a target="_blank" href="https://sigpay.sirion.io/apps/33Au5UDsPWnUL5GVT8q1Yjovw83K/crowdfund">To spend your freshly acquired signet sats you can use this BTCPay site (goes back into the faucet).</a>
+<p>To send back signet BTC or just to test sending there is a BTCPay server instance on signet connected to this
+  instances' Lightning gateway. </p>
+<a target="_blank" href="https://sigpay.sirion.io/apps/33Au5UDsPWnUL5GVT8q1Yjovw83K/crowdfund">To spend your freshly
+  acquired signet sats you can use this BTCPay site (goes back into the faucet).</a>
+
+<h1>About</h1>
+To my knowledge this is the first public Fedimint instance. Any feedback is welcome at <a href="mailto:elsirion@protonmail.com">elsirion@protonmail.com</a>.
 <!--
 {% if invoice %}
   <img style="height: 200pxm; width: 200px;" src="{{ qrcode(invoice) }}">
@@ -107,7 +141,7 @@ and thus our LN channels are small.</p>
   }
 
   #main {
-    max-width: 500px;
+    max-width: 550px;
     text-align: justify;
     margin: auto;
   }
