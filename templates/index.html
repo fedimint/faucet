@@ -84,7 +84,7 @@ To my knowledge this is the first public Fedimint instance. Any feedback is welc
 <!--
 {% if invoice %}
   <img style="height: 200pxm; width: 200px;" src="{{ qrcode(invoice) }}">
-  <div>{{ invoice }}</div>
+  <pre>{{ invoice }}</pre>
 {% endif %}
 
 <form method="post">
@@ -144,5 +144,10 @@ To my knowledge this is the first public Fedimint instance. Any feedback is welc
     max-width: 550px;
     text-align: justify;
     margin: auto;
+  }
+
+  pre {
+    word-wrap: break-word;
+    white-space: pre-wrap;
   }
 </style>
