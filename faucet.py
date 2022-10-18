@@ -10,6 +10,8 @@ from lightning import LightningRpc
 
 rpc = LightningRpc(os.environ['RPC_SOCKET'])
 connect_str = os.environ['CONNECT_STRING']
+deployed_version = os.environ['DEPLOYED_VERSION']
+
 app = Flask(__name__)
 QRcode(app)
 
@@ -36,7 +38,7 @@ def index():
                 pay_result = str(e)
              
     return render_template('index.html', name='justin', 
-        invoice=invoice, pay_result=pay_result, connect_str=connect_str)
+        invoice=invoice, pay_result=pay_result, connect_str=connect_str, deployed_version=deployed_version)
 
 
 if __name__ == "__main__":
