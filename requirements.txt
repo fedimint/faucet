@@ -11,3 +11,4 @@ pylightning
 qrcode
 zipp
 wheel
+requests
