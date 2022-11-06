@@ -40,8 +40,17 @@
 {% endif %}
 
 <form method="post">
-  <label for="amount">How much:</label><br>
+  <label for="amount">How much?</label><br>
   <input type="text" id="amount" name="amount"><br>
+  <input type="submit" value="Submit">
+</form>
+
+<h1>Mine Blocks</h1>
+
+<div>Current height: {{ height }}</div>
+<form method="post">
+  <label for="amount">How many?</label><br>
+  <input type="number" id="blocks" name="blocks"><br>
   <input type="submit" value="Submit">
 </form>
 
