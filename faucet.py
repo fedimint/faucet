@@ -35,27 +35,34 @@ def mine_blocks(num_blocks):
     address = new_address()
     return rpc("generatetoaddress", params=[num_blocks, address])
 
+def send_bitcoin(address, amount_sats):
+    amount_btc_str = '%.8f' % (amount_sats / 100_000_000)
+    return rpc("sendtoaddress", params=[address, amount_btc_str])
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     invoice = None
     pay_result = None
 
     if request.method == 'POST':
+        # mint blocks (must be first because it also has an amount ...)
+        if 'address' in request.form:
+            result = send_bitcoin(request.form["address"], int(request.form["amount"]))
+            print(r)
+
         # create invoice
-        if 'amount' in request.form:
+        elif 'amount' in request.form:
             # convert to sats
             amount = int(request.form['amount']) * 1000
             invoice = rpc.invoice(amount, str(random.random()), 'test')['bolt11']
 
         # pay invoice
-        if 'invoice' in request.form:
+        elif 'invoice' in request.form:
             pay_result = str(rpc.pay(request.form['invoice']))
 
         # mint blocks
-        if 'blocks' in request.form:
-            print("mining", type(request.form["blocks"]))
-            result = mine_blocks(int(request.form["blocks"]))
-            print(result)
+        elif 'blocks' in request.form:
+            mine_blocks(int(request.form["blocks"]))
 
     height = block_height()
              

@@ -40,8 +40,8 @@
 {% endif %}
 
 <form method="post">
-  <label for="amount">How much?</label><br>
-  <input type="text" id="amount" name="amount"><br>
+  <label for="amount">How many sats?</label><br>
+  <input type="number" id="amount" name="amount"><br>
   <input type="submit" value="Submit">
 </form>
 
@@ -51,6 +51,16 @@
 <form method="post">
   <label for="amount">How many?</label><br>
   <input type="number" id="blocks" name="blocks"><br>
+  <input type="submit" value="Submit">
+</form>
+
+<h1>Send To Address</h1>
+
+<form method="post">
+  <label for="amount">Address</label><br>
+  <input type="text" id="address" name="address"><br>
+  <label for="amount">How many sats? (minimum is 1000)</label><br>
+  <input type="number" id="amount" name="amount"><br>
   <input type="submit" value="Submit">
 </form>
 
@@ -99,4 +109,9 @@
   #stop {
     display: none;
   }
+
+  input {
+    margin: 3px;
+  }
 </style>
+
