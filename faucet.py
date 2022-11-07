@@ -39,6 +39,9 @@ def send_bitcoin(address, amount_sats):
     amount_btc_str = '%.8f' % (amount_sats / 100_000_000)
     return rpc("sendtoaddress", params=[address, amount_btc_str])
 
+def get_txoutproof(txid):
+    return rpc("gettxoutproof", params=[[txid]])
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     invoice = None
@@ -47,8 +50,7 @@ def index():
     if request.method == 'POST':
         # mint blocks (must be first because it also has an amount ...)
         if 'address' in request.form:
-            result = send_bitcoin(request.form["address"], int(request.form["amount"]))
-            print(r)
+            send_bitcoin(request.form["address"], int(request.form["amount"]))
 
         # create invoice
         elif 'amount' in request.form:
@@ -69,3 +71,7 @@ def index():
     return render_template('index.html', name='justin', 
         invoice=invoice, pay_result=pay_result, connect_str=connect_str, height=height)
 
+@app.route('/proof/<txid>')
+def proof(txid):
+    proof = get_txoutproof(txid)
+    return proof["result"]
